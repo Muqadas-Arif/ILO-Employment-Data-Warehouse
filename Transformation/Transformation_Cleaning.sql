@@ -42,3 +42,18 @@ SELECT
     SUM(CASE WHEN OBS_VALUE IN ('', 'NA', 'N/A', 'Unknown') THEN 1 ELSE 0 END) AS bad_OBS_VALUE
 FROM silver_ilo_data;
 
+
+
+-- Delete meaningless rows
+DELETE FROM silver_ilo_data WHERE TIME_PERIOD IS NULL;
+
+-- Fill missing numeric observations
+UPDATE silver_ilo_data
+SET OBS_VALUE = 0
+WHERE OBS_VALUE IS NULL;
+
+-- Label missing aggregation methods
+UPDATE silver_ilo_data
+SET AGG_METHOD = 'Unknown'
+WHERE AGG_METHOD IS NULL;
+
