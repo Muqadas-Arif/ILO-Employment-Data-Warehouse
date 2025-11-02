@@ -68,3 +68,22 @@ SELECT DISTINCT OBS_STATUS_LABEL FROM staging_ilo_emp;
 SELECT DISTINCT OBS_CONF FROM staging_ilo_emp;
 SELECT DISTINCT OBS_CONF_LABEL FROM staging_ilo_emp;
 
+-- Step: Detect Blank or Meaningless Strings in the Staging Table
+-- Purpose: Identify fields containing '', 'NA', 'N/A', or 'Unknown' values
+-- This helps in assessing data quality before applying any transformation
+
+SELECT 
+    SUM(CASE WHEN STRUCTURE IN ('', 'NA', 'N/A', 'Unknown') THEN 1 ELSE 0 END) AS bad_STRUCTURE,
+    SUM(CASE WHEN ACTION IN ('', 'NA', 'N/A', 'Unknown') THEN 1 ELSE 0 END) AS bad_ACTION,
+    SUM(CASE WHEN FREQ IN ('', 'NA', 'N/A', 'Unknown') THEN 1 ELSE 0 END) AS bad_FREQ,
+    SUM(CASE WHEN FREQ_LABEL IN ('', 'NA', 'N/A', 'Unknown') THEN 1 ELSE 0 END) AS bad_FREQ_LABEL,
+    SUM(CASE WHEN REF_AREA IN ('', 'NA', 'N/A', 'Unknown') THEN 1 ELSE 0 END) AS bad_REF_AREA,
+    SUM(CASE WHEN REF_AREA_LABEL IN ('', 'NA', 'N/A', 'Unknown') THEN 1 ELSE 0 END) AS bad_REF_AREA_LABEL,
+    SUM(CASE WHEN INDICATOR IN ('', 'NA', 'N/A', 'Unknown') THEN 1 ELSE 0 END) AS bad_INDICATOR,
+    SUM(CASE WHEN INDICATOR_LABEL IN ('', 'NA', 'N/A', 'Unknown') THEN 1 ELSE 0 END) AS bad_INDICATOR_LABEL,
+    SUM(CASE WHEN SEX IN ('', 'NA', 'N/A', 'Unknown') THEN 1 ELSE 0 END) AS bad_SEX,
+    SUM(CASE WHEN SEX_LABEL IN ('', 'NA', 'N/A', 'Unknown') THEN 1 ELSE 0 END) AS bad_SEX_LABEL,
+    SUM(CASE WHEN AGE IN ('', 'NA', 'N/A', 'Unknown') THEN 1 ELSE 0 END) AS bad_AGE,
+    SUM(CASE WHEN AGE_LABEL IN ('', 'NA', 'N/A', 'Unknown') THEN 1 ELSE 0 END) AS bad_AGE_LABEL,
+    SUM(CASE WHEN OBS_VALUE IN ('', 'NA', 'N/A', 'Unknown') THEN 1 ELSE 0 END) AS bad_OBS_VALUE
+FROM staging_ilo_emp;
